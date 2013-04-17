@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>간단한 애니메이션효과 만들기</title>
+	<script type="text/javascript" language="javascript" src="../common/js/jquery-1.7.1.min.js"></script>
+	<style type="text/css">
+		*{margin:0;padding:0;border:0}
+		#wRap{position:relative;width:100%}
+		#boxA{width:100px;height:100px;text-align:center;background:#CC0000;color:#fff;position:absolute;left:0;top:10px;font-weight:bold}
+		#boxA span{display:block;width:100px;height:20px;position:absolute;margin-top:-10px;top:50%;left:0}
+	</style>
+</head>
+<body>
+<div id="wRap">
+	<div id="boxA" class="box"><span>Box</span></div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+	//getCss ( document Element, css attribute)
+	function getCss(obj,css){
+		var rtn = null;
+		if(obj.currentStyle){
+			rtn = obj.currentStyle.getAttribute(css);
+		}else{
+			rtn = document.defaultView.getComputedStyle(obj,null).getPropertyValue(css)
+		};
+		return rtn;
+	};
+
+	var s = Number(getCss(document.getElementById('boxA'),'left').replace('px','')), //시작값
+	frm = 24, //1초당 프레임수
+	sec = 2, // 실행될 초
+	e = 600, // 종료값
+	d = e - s, // 이동할 거리
+	m = 600/(frm*sec); // 1프레임당
+	var i = 1;
+
+	function consoleMsg(){
+		s += m;
+		if(s >= e){
+			clearInterval(interval);
+			s = e;
+			document.getElementById('boxA').style.left = s+'px';
+		}else{
+			document.getElementById('boxA').style.left = s+'px';
+		}
+	};
+	var interval = setInterval(consoleMsg,1000/frm);
+
+//]]>
+</script>
+</body>
+</html>

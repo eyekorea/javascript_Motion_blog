@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>간단한 애니메이션효과 만들기</title>
+</head>
+<body>
+<script type="text/javascript">
+//<![CDATA[
+	//모션을 만들기 전 테스트
+	//1. 인터발 실행 시켜보기.
+	var i = 1;
+	function consoleMsg(){
+		console.log(i);
+		i+=1000/24;
+	};
+	var interval = setInterval(consoleMsg,1000/24);
+	setTimeout(function(){
+		clearInterval(interval);
+	},1000)
+//]]>
+</script>
+</body>
+</html>

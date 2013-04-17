@@ -1,0 +1,127 @@
+/*
+fileName : common.css
+charset : utf-8 
+cssVer : css 2.0
+publisher : 정상현
+*/
+
+/*css 초기화*/
+*{margin:0; padding:0}
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td { margin:0;padding:0}
+body{ font-family:'돋움','굴림';color:#8b887f; line-height:14px; font-size:12px}
+table {border-collapse:collapse;border-spacing:0}
+fieldset,img { border:0}
+address,caption,cite,code,dfn,em,th,var {font-style:normal;font-weight:normal}
+caption{display:none;}
+ol,ul {list-style:none}
+caption,th {text-align:left}
+h1,h2,h3,h4,h5,h6 {font-size:100%;font-weight:normal}
+q:before,q:after {content:''}
+abbr,acronym { border:0}
+a{text-decoration:none;color:#8e8e8e}
+a:hover{text-decoration:underline}
+img{vertical-align:middle; border:0}
+legend{display:none}
+input,label,select{vertical-align:middle}
+
+/*여백*/
+.mt5{margin-top:5px}
+.mt8{margin-top:8px}
+.mt10{margin-top:10px}
+.mt13{margin-top:13px}
+.mt15{margin-top:15px}
+.mt20{margin-top:20px}
+.mt25{margin-top:25px}
+.mt28{margin-top:28px}
+.mt30{margin-top:30px}
+.mt35{margin-top:35px}
+.mt40{margin-top:40px}
+.mt50{margin-top:50px}
+.mt55{margin-top:55px}
+.mt70{margin-top:70px}
+.mt100{margin-top:100px}
+.ml2{margin-left:2px}
+.ml5{margin-left:5px}
+.ml10{margin-left:10px}
+.ml15{margin-left:15px}
+.ml20{margin-left:20px}
+.ml25{margin-left:25px}
+.ml30{margin-left:30px}
+.ml40{margin-left:40px}
+.ml50{margin-left:50px}
+.mr5{margin-right:5px}
+.mr10{margin-right:10px}
+.mr15{margin-right:15px}
+.mr20{margin-right:20px}
+.mr25{margin-right:25px}
+.mr30{margin-right:30px}
+.mr40{margin-right:40px}
+.mr50{margin-right:50px}
+.mb5{margin-bottom:5px}
+.mb10{margin-bottom:10px}
+.mb15{margin-bottom:15px}
+.mb20{margin-bottom:20px}
+.mb25{margin-bottom:25px}
+.mb30{margin-bottom:30px}
+.mb40{margin-bottom:40px}
+.mb50{margin-bottom:50px}
+
+.pt3{padding-top:3px}
+.pt5{padding-top:5px}
+.pt10{padding-top:10px}
+.pt15{padding-top:15px}
+.pt20{padding-top:20px}
+.pt25{padding-top:25px}
+.pt30{padding-top:30px}
+.pt40{padding-top:40px}
+.pt50{padding-top:50px}
+.pl5{padding-left:5px}
+.pl8{padding-left:8px}
+.pl10{padding-left:10px}
+.pl15{padding-left:15px}
+.pl20{padding-left:20px !important}
+.pl25{padding-left:25px}
+.pl30{padding-left:30px}
+.pl40{padding-left:40px}
+.pl50{padding-left:50px}
+.pr5{padding-right:5px}
+.pr10{padding-right:10px}
+.pr15{padding-right:15px}
+.pr20{padding-right:20px}
+.pr25{padding-right:25px}
+.pr30{padding-right:30px}
+.pr40{padding-right:40px}
+.pr50{padding-right:50px}
+.pb5{padding-bottom:5px}
+.pb10{padding-bottom:10px}
+.pb15{padding-bottom:15px}
+.pb20{padding-bottom:20px}
+.pb25{padding-bottom:25px}
+.pb27{padding-bottom:27px}
+.pb30{padding-bottom:30px}
+.pb40{padding-bottom:40px}
+.pb50{padding-bottom:50px}
+.p15{padding:15px}
+.line20{line-height:20px}
+.fl{float:left}
+.fr{float:right}
+.cl{clear:both}
+.cn{text-align:center}
+.tr{text-align:right}
+.dn{display:none}
+
+/*게시판 페이징*/
+.page{text-align:center;margin-top:20px}
+.page li{display:inline; margin:0 0 0 0px;background:url(/img/common/ico_10.gif) no-repeat right 50%;padding-right:8px}
+.page li.nbg{background:none;padding:0}
+.page li a{color:#8b887f;font-size:12px}
+.page li.this a{font-weight:bold;color:#cb7b2d}
+.page li img{margin-top:0px}
+
+.f12{font-size:12px;margin-bottom:10px}
+.f14{font-size:14px;margin-bottom:10px}
+.f16{font-size:16px;margin-bottom:10px}
+.f18{font-size:18px;margin-bottom:10px}
+.f20{font-size:20px;margin-bottom:10px}
+.f22{font-size:22px;margin-bottom:10px}
+.f24{font-size:24px;margin-bottom:10px}

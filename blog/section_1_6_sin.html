@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>간단한 애니메이션효과 만들기</title>
+	<script type="text/javascript" language="javascript" src="../common/js/jquery-1.7.1.min.js"></script>
+	<style type="text/css">
+		*{margin:0;padding:0;border:0}
+		#wRap{position:relative;width:100%}
+		.dot{position:absolute;width:1px;height:1px;background-color:red}
+	</style>
+</head>
+<body>
+<div id="wRap">
+	<div class="box"></div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+	//Math 객체에 toRadian 속성을 추가
+	(function(){
+		if(Math.__proto__){
+			Math.__proto__.toRadian = function(number){
+				return number * (Math.PI/180);
+			};
+		}else{
+			Math.constructor.prototype.toRadian = function(number){
+				return number * (Math.PI/180);
+			};
+		}
+	})();
+	
+	//getCss ( document Element, css attribute)
+	function getCss(obj,css){
+		var rtn = null;
+		if(obj.currentStyle){
+			rtn = obj.currentStyle.getAttribute(css);
+		}else{
+			rtn = document.defaultView.getComputedStyle(obj,null).getPropertyValue(css)
+		};
+		return rtn;
+	};
+	
+	var s = 0,
+	r = 0,
+	r2 = 0,
+	r3,r4,
+	frm = 500, //1초당 프레임수
+	sec = 1, // 실행될 초
+	e = 600, // 종료값
+	d = e - s, // 이동할 거리
+	m = 600/(frm*sec); // 1프레임당
+	var rRoof = 360/(frm*sec);
+	var spd = 1;
+	var i, forRoof=frm*sec, moveArr_left=[], moveArr_top=[], timeout;
+	
+	for(i=0;i<forRoof;i++){
+		moveArr_left[i] = 200 + Math.sin(Math.toRadian(r)) * 200;
+		moveArr_top[i] = 200 + Math.cos(Math.toRadian(r)) * 200;
+		r += rRoof;
+	};
+
+	var timeoutEve = function(){
+		var obj = document.createElement('div');
+		obj.setAttribute('class','dot');
+		obj.style.top = moveArr_top[0] + 'px';
+		obj.style.left = moveArr_left[0] + 'px';
+		document.getElementById('wRap').appendChild(obj)
+		moveArr_left.shift();
+		moveArr_top.shift();
+		if(moveArr_top.length != 0 ){
+			timeout = setTimeout(timeoutEve,1);
+		}
+	}
+	timeoutEve();
+
+//]]>
+</script>
+</body>
+</html>

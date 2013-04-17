@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>간단한 애니메이션효과 만들기</title>
+	<script type="text/javascript" language="javascript" src="../common/js/jquery-1.7.1.min.js"></script>
+	<style type="text/css">
+		*{margin:0;padding:0;border:0}
+		#wRap{position:relative;width:100%}
+		#boxA{width:10px;height:10px;text-align:center;background:#CC0000;color:#fff;position:absolute;left:100px;top:10px;font-weight:bold}
+	</style>
+</head>
+<body>
+<div id="wRap">
+	<div id="boxA" class="box"></div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+	//Math 객체에 toRadian 속성을 추가
+	(function(){
+		if(Math.__proto__){
+			Math.__proto__.toRadian = function(number){
+				return number * (Math.PI/180);
+			};
+		}else{
+			Math.constructor.prototype.toRadian = function(number){
+				return number * (Math.PI/180);
+			};
+		}
+	})();
+	
+	//getCss ( document Element, css attribute)
+	function getCss(obj,css){
+		var rtn = null;
+		if(obj.currentStyle){
+			rtn = obj.currentStyle.getAttribute(css);
+		}else{
+			rtn = document.defaultView.getComputedStyle(obj,null).getPropertyValue(css)
+		};
+		return rtn;
+	};
+	
+
+	var s = 0, 
+	obj_s = Number(getCss(document.getElementById('boxA'),'left').replace('px','')),//시작값
+	frm = 30, //1초당 프레임수
+	sec = 1,// 실행될 초
+	e = 300, // 종료값
+	d = e - obj_s, // 이동할 거리
+	m = d/(frm*sec); // 1프레임당
+	var r = 0;
+	var i, forRoof=frm*sec, moveArr=[], timeout;
+	for(i=0;i<forRoof;i++){
+		if(i==forRoof-1){
+			s = d;
+		}else{
+			s += d/(frm*sec);
+		}
+		r = (r + 90/(frm*sec));
+		moveArr[i] = (obj_s + Math.sin(Math.toRadian(r))*s);
+	};
+	var timeoutEve = function(){
+		document.getElementById('boxA').style.left = moveArr[0] + 'px';
+		moveArr.shift();	
+		if(moveArr.length != 0 ){
+			timeout = setTimeout(timeoutEve,1000/frm);
+		}
+	}
+	timeoutEve();
+
+//]]>
+</script>
+</body>
+</html>

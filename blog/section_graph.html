@@ -1,0 +1,317 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>간단한 애니메이션효과 만들기</title>
+	<script type="text/javascript" language="javascript" src="../common/js/jquery-1.7.1.min.js"></script>
+	<style type="text/css">
+		*{margin:0;padding:0;border:0}
+		#wRap{position:relative;width:100%;padding-bottom:100px}
+		.graph{width:300px;height:150px;position:relative;border-bottom:1px solid #9A9A9A;border-right:1px solid #9A9A9A;margin-left:100px;margin-top:50px}
+		.box{width:1px;height:1px;text-align:center;background:#CC0000;color:#fff;position:absolute;left:0;bottom:0;font-weight:bold}
+		.ball{width:4px;height:4px;background:#000066;position:absolute;right:-10px;bottom:0}
+	</style>
+</head>
+<body>
+<div id="wRap">
+	<div id="graph_a" class="graph">
+		<p>easeInQuad</p>
+	</div>
+	<div id="graph_b" class="graph">
+		<p>easeOutQuad</p>
+	</div>
+	<div id="graph_c" class="graph">
+		<p>easeInOutQuad</p>
+	</div>
+	<div id="graph_d" class="graph">
+		<p>easeInCubic</p>
+	</div>
+	<div id="graph_e" class="graph">
+		<p>easeOutCubic</p>
+	</div>
+	<div id="graph_f" class="graph">
+		<p>easeInOutCubic</p>
+	</div>
+	<div id="graph_g" class="graph">
+		<p>easeInQuart</p>
+	</div>
+	<div id="graph_h" class="graph">
+		<p>easeOutQuart</p>
+	</div>
+	<div id="graph_i" class="graph">
+		<p>easeInOutQuart</p>
+	</div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+	//Math 객체에 toRadian 속성을 추가
+	(function(){
+		if(Math.__proto__){
+			Math.__proto__.toRadian = function(number){
+				return number * (Math.PI/180);
+			};
+		}else{
+			Math.constructor.prototype.toRadian = function(number){
+				return number * (Math.PI/180);
+			};
+		}
+	})();
+	
+	//getCss ( document Element, css attribute)
+	function getCss(obj,css){
+		var rtn = null;
+		if(obj.currentStyle){
+			rtn = obj.currentStyle.getAttribute(css);
+		}else{
+			rtn = document.defaultView.getComputedStyle(obj,null).getPropertyValue(css)
+		};
+		return rtn;
+	};
+
+	//graph object
+	var ease = {};
+	ease.fnc = function(){
+		var i,j,moveArr_left_bak,moveArr_top_bak;
+		var ball = document.createElement('div');
+		var addPosGraph = 0;
+		ball.setAttribute('class','ball');
+		this.moveArr_left = [];
+		this.moveArr_top = [];
+		this.userSet = {
+			moveM : 150,
+			graph_width : 300,
+			graphObj : document.getElementById('graph_a'),
+			sec : 1,
+			frame : 30,
+			option : 'easeInQuad'
+		};
+		this.autoSet = function(){
+			var roof = this.userSet.sec * this.userSet.frame;
+			var roofRadian = 90 / roof;
+			var time_left = this.userSet.graph_width / roof;
+			var rad = [];
+			if(this.userSet.option == 'easeInQuad'){
+				for(i=0;i<roof;i++){
+					this.moveArr_left[i] = (i == 0)?time_left:this.moveArr_left[i-1] + time_left;
+					this.moveArr_top[i] = Math.cos(Math.toRadian(roofRadian * (i+1))) * this.userSet.moveM;
+				}
+			}else if(this.userSet.option == 'easeOutQuad'){
+				for(i=0;i<roof;i++){
+					this.moveArr_left[i] = (i == 0)?time_left:this.moveArr_left[i-1] + time_left;
+					this.moveArr_top[i] = this.userSet.moveM - Math.cos(Math.toRadian(90 - roofRadian * (i+1))) * this.userSet.moveM;
+				}
+			}else if(this.userSet.option == 'easeInOutQuad'){
+				roofRadian = 180/roof
+				for(i=0;i<roof;i++){
+					this.moveArr_left[i] = (i == 0)?time_left:this.moveArr_left[i-1] + time_left;
+					this.moveArr_top[i] = Math.cos(Math.toRadian(roofRadian * (i+1))) * (this.userSet.moveM/2) + ( this.userSet.moveM /2);
+				};
+			}else if(this.userSet.option == 'easeInCubic'){
+				var roofNew;
+				for(i=0;i<roof;i++){
+					roofNew = roofRadian * (roof * ((i+1)/roof)) / roof;
+					this.moveArr_left[i] = (i == 0)?time_left:this.moveArr_left[i-1] + time_left;
+					this.moveArr_top[i] = Math.cos(Math.toRadian(roofNew * (i+1))) * this.userSet.moveM;
+				}
+			}else if(this.userSet.option == 'easeOutCubic'){
+				var roofNew;
+				for(i=0;i<roof;i++){
+					roofNew = roofRadian * (roof * ((roof - i)/roof)) / roof;
+					this.moveArr_left[i] = (i == 0)?time_left:this.moveArr_left[i-1] + time_left;
+					this.moveArr_top[i] = this.userSet.moveM + Math.cos(Math.toRadian(180- roofNew * (roof - i))) * this.userSet.moveM;
+				}
+			}else if(this.userSet.option == 'easeInOutCubic'){
+				var roofNew,per;
+				roofRadian = 180/roof;
+				for(i=0;i<roof;i++){
+					this.moveArr_left[i] = (i == 0)?time_left:this.moveArr_left[i-1] + time_left;
+					if( i < roof/2){
+						roofNew = roofRadian * (roof * (i/roof*2)) / roof;
+						this.moveArr_top[i] = Math.cos(Math.toRadian(roofNew * i)) * (this.userSet.moveM/2)+ ( this.userSet.moveM /2);
+					}else{
+						roofNew = roofRadian * (roof * ((roof*2 - i)/roof*2))/ roof;
+						this.moveArr_top[i] = Math.cos(Math.toRadian(180-roofNew * i)) * (this.userSet.moveM/2)+ ( this.userSet.moveM /2);
+					}
+				}
+			}else if(this.userSet.option == 'easeInQuart'){
+				var roofNew;
+				for(i=0;i<roof;i++){
+					roofNew = roofRadian * (roof * ((i+1)/roof)) * ((i+1)/roof) / roof;
+					this.moveArr_left[i] = (i == 0)?time_left:this.moveArr_left[i-1] + time_left;
+					this.moveArr_top[i] = Math.cos(Math.toRadian(roofNew * (i+1))) * this.userSet.moveM;
+				}
+			}else if(this.userSet.option == 'easeOutQuart'){
+				var roofNew;
+				for(i=0;i<roof;i++){
+					roofNew = roofRadian * (roof * ((roof - i)/roof)) * ((roof - i)/roof) / roof;
+					this.moveArr_left[i] = (i == 0)?time_left:this.moveArr_left[i-1] + time_left;
+					this.moveArr_top[i] = this.userSet.moveM + Math.cos(Math.toRadian(180- roofNew * (roof - i))) * this.userSet.moveM;
+				}
+			}else if(this.userSet.option == 'easeInOutQuart'){
+				var roofNew,per;
+				for(i=0;i<roof;i++){
+				//	this.moveArr_left[i] = (i == 0)?time_left:this.moveArr_left[i-1] + time_left;
+					if( i < roof/2){
+						roofNew = roofRadian * (roof * ((i+1)/roof)) * ((i+1)/roof) / (roof/5.2);
+						this.moveArr_left[i] = (i == 0)?time_left:this.moveArr_left[i-1] + time_left;
+						this.moveArr_top[i] = Math.cos(Math.toRadian(roofNew * (i+1))) * this.userSet.moveM;
+					}else{
+						roofNew = roofRadian * (roof * ((roof - i)/roof)) * ((roof - i)/roof) / (roof/5.2);
+						this.moveArr_left[i] = (i == 0)?time_left:this.moveArr_left[i-1] + time_left;
+						this.moveArr_top[i] =  this.userSet.moveM + Math.cos(Math.toRadian(180- roofNew * (roof - i))) * this.userSet.moveM;
+					}
+					
+				//	console.log(roofNew + ' , ' + this.moveArr_top[i]);
+				}
+			}
+			moveArr_left_bak = this.moveArr_left;
+			moveArr_top_bak = this.moveArr_top;
+			return this;
+		};
+		this.removeObj = function(){
+			var Elements = this.userSet.graphObj.getElementsByTagName('div');
+			for(i=Elements.length - 1; i>=0;i--){
+				if(Elements[i].className == 'ball' || Elements[i].className == 'box'){
+					this.userSet.graphObj.removeChild(Elements[i]);
+				};
+			};
+			return this;
+		};
+		this.graphDraw = function(){
+			var me = this;
+			var paper = this.userSet.graphObj;
+			paper.appendChild(ball);
+			if(this.moveArr_left.length != 0){
+				var addObj = document.createElement('div');
+				addObj.setAttribute('class','box');
+				addObj.style.left = this.moveArr_left[0] + 'px';
+				addObj.style.top = this.moveArr_top[0]+ 'px';
+				ball.style.top = this.moveArr_top[0] + 'px';
+				paper.appendChild(addObj);
+				this.moveArr_left.shift();
+				this.moveArr_top.shift();
+				setTimeout(function(){
+					me.graphDraw();
+				},1000/me.userSet.frame)
+			}else{
+				me.moveArr_left = moveArr_left_bak;
+				me.moveArr_top = moveArr_top_bak;
+			}
+			return this;
+		}
+	};
+
+
+	var obj = new ease.fnc();
+	obj.userSet = {
+		moveM : 150,
+		graph_width : 300,
+		graphObj : document.getElementById('graph_a'),
+		sec : 1,
+		frame : 100,
+		option : 'easeInQuad'
+	};
+	document.getElementById('graph_a').onclick = function(){
+		obj.removeObj().autoSet().graphDraw();
+	}
+	
+	var obj2 = new ease.fnc();
+	obj2.userSet = {
+		moveM : 150,
+		graph_width : 300,
+		graphObj : document.getElementById('graph_b'),
+		sec : 1,
+		frame : 100,
+		option : 'easeOutQuad'
+	};
+	document.getElementById('graph_b').onclick = function(){
+		obj2.removeObj().autoSet().graphDraw();
+	}
+	var obj3 = new ease.fnc();
+	obj3.userSet = {
+		moveM : 150,
+		graph_width : 300,
+		graphObj : document.getElementById('graph_c'),
+		sec : 1,
+		frame : 100,
+		option : 'easeInOutQuad'
+	};
+	document.getElementById('graph_c').onclick = function(){
+		obj3.removeObj().autoSet().graphDraw();
+	}
+	var obj4 = new ease.fnc();
+	obj4.userSet = {
+		moveM : 150,
+		graph_width : 300,
+		graphObj : document.getElementById('graph_d'),
+		sec : 1,
+		frame : 150,
+		option : 'easeInCubic'
+	};
+	document.getElementById('graph_d').onclick = function(){
+		obj4.removeObj().autoSet().graphDraw();
+	}
+	var obj5 = new ease.fnc();
+	obj5.userSet = {
+		moveM : 150,
+		graph_width : 300,
+		graphObj : document.getElementById('graph_e'),
+		sec : 1,
+		frame : 150,
+		option : 'easeOutCubic'
+	};
+	document.getElementById('graph_e').onclick = function(){
+		obj5.removeObj().autoSet().graphDraw();
+	}
+	var obj6 = new ease.fnc();
+	obj6.userSet = {
+		moveM : 150,
+		graph_width : 300,
+		graphObj : document.getElementById('graph_f'),
+		sec : 1,
+		frame : 150,
+		option : 'easeInOutCubic'
+	};
+	document.getElementById('graph_f').onclick = function(){
+		obj6.removeObj().autoSet().graphDraw();
+	}
+	var obj7 = new ease.fnc();
+	obj7.userSet = {
+		moveM : 150,
+		graph_width : 300,
+		graphObj : document.getElementById('graph_g'),
+		sec : 1,
+		frame : 150,
+		option : 'easeInQuart'
+	};
+	document.getElementById('graph_g').onclick = function(){
+		obj7.removeObj().autoSet().graphDraw();
+	}
+	var obj8 = new ease.fnc();
+	obj8.userSet = {
+		moveM : 150,
+		graph_width : 300,
+		graphObj : document.getElementById('graph_h'),
+		sec : 1,
+		frame : 150,
+		option : 'easeOutQuart'
+	};
+	document.getElementById('graph_h').onclick = function(){
+		obj8.removeObj().autoSet().graphDraw();
+	}
+	var obj9 = new ease.fnc();
+	obj9.userSet = {
+		moveM : 150,
+		graph_width : 300,
+		graphObj : document.getElementById('graph_i'),
+		sec : 1,
+		frame : 150,
+		option : 'easeInOutQuart'
+	};
+	document.getElementById('graph_i').onclick = function(){
+		obj9.removeObj().autoSet().graphDraw();
+	}
+//]]>
+</script>
+</body>
+</html>
